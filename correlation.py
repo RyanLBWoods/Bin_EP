@@ -3,8 +3,9 @@ import pandas as pd
 import datetime
 from sklearn.linear_model import LinearRegression
 
-
+# Read data
 data = pd.read_csv("energydata_complete.csv", header=0)
+# Process date column
 time_list = []
 for date in data['date']:
     date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
@@ -12,6 +13,7 @@ for date in data['date']:
     time_list.append(date)
 
 data['time_int'] = time_list
+# Delete useless data
 del data['date']
 del data['rv1']
 del data['rv2']
@@ -25,6 +27,7 @@ x_press = data[['Press_mm_hg']]
 x_vsb = data[['Visibility']]
 x_tdew = data[['Tdewpoint']]
 
+# Observe correlations
 lr = LinearRegression()
 lr.fit(x_rh4, y)
 model_rh4 = (lr.coef_, lr.intercept_)
@@ -54,6 +57,8 @@ lr.fit(x_tdew, y)
 model_tdew = (lr.coef_, lr.intercept_)
 print("Tdewpoint: ", model_tdew)
 
+
+# Check difference of T6 and RH6 with T_out and RH_out
 t6 = data['T6']
 to = data['T_out']
 
