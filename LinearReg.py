@@ -1,36 +1,9 @@
-import numpy as np
-import math
+import Functions
 import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
 from sklearn.linear_model import LinearRegression
 from sklearn.cross_validation import train_test_split
-
-
-# Absolute Error
-def ae(test, predict):
-    return abs(test - predict)
-
-
-# Mean Absolute Error
-def mae(test, predict):
-    return ae(test, predict).mean()
-
-
-# Squared Error
-def se(test, predict):
-    return (test - predict) ** 2
-
-
-# Mean Squared Error
-def mse(test, predict):
-    return se(test, predict).mean()
-
-
-# Root Mean Squared Error
-def rmse(test, predict):
-    return math.sqrt(mse(test, predict))
-
 
 data = pd.read_csv("energydata_complete.csv", header=0)
 time_list = []
@@ -55,13 +28,13 @@ lr.fit(x_train, y_train)
 lmtrain_all = (lr.coef_, lr.intercept_)
 
 y_train_predict = lr.predict(x_train)
-t_mae = mae(y_train, y_train_predict)
-t_rmse = rmse(y_train, y_train_predict)
+t_mae = Functions.mae(y_train, y_train_predict)
+t_rmse = Functions.rmse(y_train, y_train_predict)
 
 y_predict = lr.predict(x_test)
 print(type(y_predict[-1]))
-mae = mae(y_test, y_predict)
-rmse = rmse(y_test, y_predict)
+mae = Functions.mae(y_test, y_predict)
+rmse = Functions.rmse(y_test, y_predict)
 print('Train:')
 print('MAE of all: ', t_mae)
 print('RMSE of all: ', t_rmse)
