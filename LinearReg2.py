@@ -14,7 +14,7 @@ for date in data['date']:
     date = date.hour
     time_list.append(date)
 
-data['time_int'] = time_list
+data['hour'] = time_list
 # Delete useless data
 del data['date']
 del data['rv1']
