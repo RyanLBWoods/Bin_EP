@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
 from sklearn import svm
-from sklearn.cross_validation import train_test_split
+from sklearn import cross_validation
 
 # Read data
 data = pd.read_csv("energydata_complete.csv", header=0)
@@ -26,7 +26,7 @@ del data['rv2']
 del data['RH_6']
 
 # Get training set and testing set
-x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, 1:], data['Appliances'], random_state=1)
+x_train, x_test, y_train, y_test = cross_validation.train_test_split(data.iloc[:, 1:], data['Appliances'], random_state=1)
 
 # Delete least correlation data
 del x_train['Visibility']
@@ -39,7 +39,6 @@ del x_test['T9']
 # Run SVM regression
 svmr = svm.SVR(kernel='rbf')
 svmr.fit(x_train, y_train)
-
 # Evaluate performance
 y_train_predict = svmr.predict(x_train)
 t_mae = Functions.mae(y_train, y_train_predict)
