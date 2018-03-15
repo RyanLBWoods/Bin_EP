@@ -60,6 +60,10 @@ plt.ylabel('Appliances')
 # Delete least correlation data
 del x_train['Visibility']
 del x_test['Visibility']
+del x_train['RH_5']
+del x_test['RH_5']
+del x_train['T9']
+del x_test['T9']
 
 # Run linear regression
 lr = LinearRegression()
@@ -75,13 +79,13 @@ y_predict = lr.predict(x_test)
 mae = Functions.mae(y_test, y_predict)
 rmse = Functions.rmse(y_test, y_predict)
 print('Train:')
-print('MAE without vsb and rh6: ', t_mae)
-print('RMSE without vsb and rh6: ', t_rmse)
+print('MAE without vsb & rh6 & T9 & RH5: ', t_mae)
+print('RMSE without vsb & rh6 & T9 & RH5: ', t_rmse)
 print('Test:')
-print('Mae without vsb and rh6: ', mae)
-print('RMSE without vsb and rh6: ', rmse)
+print('Mae without vsb & rh6 & T9 & RH5: ', mae)
+print('RMSE without vsb & rh6 & T9 & RH5: ', rmse)
 
 # Plot graph of test output and predict output
-plt.plot(range(len(y_predict)), y_predict, 'g', label='predict without RH6 & Visibility', linewidth=1)
+plt.plot(range(len(y_predict)), y_predict, 'g', label='predict without RH6 & Visibility,T9,RH_5', linewidth=1)
 plt.legend(loc='upper right')
 plt.show()
