@@ -8,13 +8,17 @@ from sklearn.cross_validation import train_test_split
 # Read data
 data = pd.read_csv("energydata_complete.csv", header=0)
 time_list = []
+nsm_list = []
 # Process date column
 for date in data['date']:
     date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    nsm = int(date.hour) * 3600 + int(date.minute) * 60 + int(date.second) * 1
     date = date.hour
     time_list.append(date)
+    nsm_list.append(nsm)
 
 data['hour'] = time_list
+data['NSM'] = nsm_list
 # Delete useless data
 del data['date']
 del data['rv1']
