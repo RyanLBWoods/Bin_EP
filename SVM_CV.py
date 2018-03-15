@@ -1,5 +1,4 @@
 import Functions
-# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import datetime
@@ -43,6 +42,6 @@ rmses = []
 for mse in mses:
     mse = np.sqrt(mse)
     rmses.append(mse)
-print("Mean result after 5-fold validation")
+print("Mean result after 10-fold validation")
 print("MAE: ", mae.mean())
 print("RMSE: ", Functions.mean(rmses))
