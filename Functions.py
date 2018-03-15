@@ -24,3 +24,8 @@ def mse(test, predict):
 # Root Mean Squared Error
 def rmse(test, predict):
     return np.sqrt(mse(test, predict))
+
+
+# Mean
+def mean(data):
+    return sum(data) / len(data)
