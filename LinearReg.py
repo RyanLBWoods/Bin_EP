@@ -27,9 +27,9 @@ del data['rv2']
 # Get training set and testing set
 train_length = int(0.75 * len(data))
 
-x_train = data.iloc[:train_length, 1:27]
+x_train = data.iloc[:train_length, 1:]
 y_train = data[:train_length]['Appliances']
-x_test = data.iloc[train_length:, 1:27]
+x_test = data.iloc[train_length:, 1:]
 y_test = data[train_length:]['Appliances']
 
 # Run linear regression with all attributes
@@ -43,7 +43,6 @@ t_mae = Functions.mae(y_train, y_train_predict)
 t_rmse = Functions.rmse(y_train, y_train_predict)
 
 y_predict = lr.predict(x_test)
-print(type(y_predict[-1]))
 mae = Functions.mae(y_test, y_predict)
 rmse = Functions.rmse(y_test, y_predict)
 print('Train:')

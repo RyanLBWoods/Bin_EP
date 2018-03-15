@@ -28,9 +28,9 @@ del data['RH_6']
 # Get training set and testing set
 train_length = int(0.75 * len(data))
 
-x_train = data.iloc[:train_length, 1:27]
+x_train = data.iloc[:train_length, 1:]
 y_train = data[:train_length]['Appliances']
-x_test = data.iloc[train_length:, 1:27]
+x_test = data.iloc[train_length:, 1:]
 y_test = data[train_length:]['Appliances']
 
 # Run linear regression
