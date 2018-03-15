@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
+from scipy.stats import pearsonr
 from sklearn.linear_model import LinearRegression
 
 # Read data
@@ -12,51 +13,45 @@ for date in data['date']:
     date = date.hour
     time_list.append(date)
 
-data['time_int'] = time_list
+data['hour'] = time_list
 # Delete useless data
 del data['date']
 del data['rv1']
 del data['rv2']
 
+# Rename columns
+data['VSB'] = data['Visibility']
+data['Wspd'] = data['Windspeed']
+data['Press'] = data['Press_mm_hg']
+data['Tp'] = data['Tdewpoint']
+del data['Visibility']
+del data['Windspeed']
+del data['Press_mm_hg']
+del data['Tdewpoint']
+print(data.tail())
+# exit(0)
+x = data.loc[:, 'lights':]
 y = data['Appliances']
-x_rh4 = data[['RH_4']]
-x_t5 = data[['T5']]
-x_rh5 = data[['RH_5']]
-x_t9 = data[['T9']]
-x_press = data[['Press_mm_hg']]
-x_vsb = data[['Visibility']]
-x_tdew = data[['Tdewpoint']]
+correlation = {}
 
-# Observe correlations
-lr = LinearRegression()
-lr.fit(x_rh4, y)
-model_rh4 = (lr.coef_, lr.intercept_)
-print("rh4: ", model_rh4)
+for column in x.columns:
+    correlation[column] = pearsonr(x[column], y)
 
-lr.fit(x_t5, y)
-model_t5 = (lr.coef_, lr.intercept_)
-print("t5: ", model_t5)
+pearson_correlation = pd.DataFrame(correlation)
+pearson_correlation.index = ['r', 'p_value']
+pearson_correlation = pearson_correlation.T
+pearson_correlation['label'] = correlation.keys()
+print(pearson_correlation)
 
-lr.fit(x_rh5, y)
-model_rh5 = (lr.coef_, lr.intercept_)
-print("rh5:", model_rh5)
-
-lr.fit(x_t9, y)
-model_t9 = (lr.coef_, lr.intercept_)
-print("t9", model_t9)
-
-lr.fit(x_press, y)
-model_press = (lr.coef_, lr.intercept_)
-print("press:", model_press)
-
-lr.fit(x_vsb, y)
-model_vsb = (lr.coef_, lr.intercept_)
-print("visibility: ",model_vsb)
-
-lr.fit(x_tdew, y)
-model_tdew = (lr.coef_, lr.intercept_)
-print("Tdewpoint: ", model_tdew)
-
+plt.figure(figsize=(20, 8))
+ax1 = plt.subplot(411)
+plt.scatter(pearson_correlation[:]['label'], pearson_correlation[:]['r'], color='blue', marker='o')
+ax1.set_title('r value of Pearson correlation coefficient')
+plt.tight_layout()
+ax2 = plt.subplot(412)
+plt.scatter(pearson_correlation[:]['label'], pearson_correlation[:]['p_value'], color='red', marker='v')
+ax2.set_title('p value of Pearson correlation coefficient')
+plt.tight_layout()
 
 # Check difference of T6 and RH6 with T_out and RH_out
 t6 = data['T6']
@@ -65,18 +60,23 @@ to = data['T_out']
 rh6 = data['RH_6']
 rho = data['RH_out']
 
-plt.figure(figsize=(20,8))
-ax1 = plt.subplot(211)
+ax3 = plt.subplot(413)
 plt.plot(range(len(t6)), t6, 'b', label='measured', linewidth=0.8)
 plt.plot(range(len(t6)), to, 'r', label='station', linewidth=0.8)
 plt.legend(loc='upper right')
-ax1.set_title('Temperature Outside')
+ax3.set_title('Temperature Outside')
 plt.ylabel('Temperature')
-ax2 = plt.subplot(212)
+plt.tight_layout()
+
+ax4 = plt.subplot(414)
 plt.plot(range(len(rh6)), rh6, 'b', label='measured', linewidth=0.8)
 plt.plot(range(len(rho)), rho, 'r', label='station', linewidth=0.8)
 plt.legend(loc='upper right')
-ax2.set_title('Humidity Outside')
-plt.xlabel('index')
+ax4.set_title('Humidity Outside')
 plt.ylabel('Humidity')
+plt.tight_layout()
+
+# Remove label column
+del pearson_correlation['label']
+pearson_correlation.to_csv('Pearson_correlation.csv')
 plt.show()
