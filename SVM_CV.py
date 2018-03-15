@@ -25,25 +25,18 @@ del data['date']
 del data['rv1']
 del data['rv2']
 del data['RH_6']
-
-# Get training set and testing set
-x_train, x_test, y_train, y_test = cross_validation.train_test_split(data.iloc[:, 1:], data['Appliances'], random_state=1)
-
 # Delete least correlation data
-del x_train['Visibility']
-del x_test['Visibility']
-del x_train['RH_5']
-del x_test['RH_5']
-del x_train['T9']
-del x_test['T9']
+del data['Visibility']
+del data['RH_5']
+del data['T9']
 
 # Run SVM regression
 svmr = svm.SVR(kernel='rbf')
 # Cross validation
 mses = - cross_validation.cross_val_score(svmr, data.iloc[:, 1:], data['Appliances'],
-                                          cv=5, scoring='neg_mean_squared_error')
+                                          cv=10, scoring='neg_mean_squared_error')
 mae = - cross_validation.cross_val_score(svmr, data.iloc[:, 1:], data['Appliances'],
-                                          cv=5, scoring='neg_mean_absolute_error')
+                                          cv=10, scoring='neg_mean_absolute_error')
 
 # Calculate mean
 rmses = []
