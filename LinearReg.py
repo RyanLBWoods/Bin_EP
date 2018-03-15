@@ -25,12 +25,7 @@ del data['rv1']
 del data['rv2']
 
 # Get training set and testing set
-train_length = int(0.75 * len(data))
-
-x_train = data.iloc[:train_length, 1:]
-y_train = data[:train_length]['Appliances']
-x_test = data.iloc[train_length:, 1:]
-y_test = data[train_length:]['Appliances']
+x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, 1:], data['Appliances'], random_state=1)
 
 # Run linear regression with all attributes
 lr = LinearRegression()
