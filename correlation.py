@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
 from scipy.stats import pearsonr
+import collections
 from sklearn.linear_model import LinearRegression
 
 # Read data
@@ -28,11 +29,11 @@ del data['Visibility']
 del data['Windspeed']
 del data['Press_mm_hg']
 del data['Tdewpoint']
-print(data.tail())
-# exit(0)
+
+# Get xy for Pearson correlation
 x = data.loc[:, 'lights':]
 y = data['Appliances']
-correlation = {}
+correlation = collections.OrderedDict()
 
 for column in x.columns:
     correlation[column] = pearsonr(x[column], y)
@@ -43,13 +44,16 @@ pearson_correlation = pearson_correlation.T
 pearson_correlation['label'] = correlation.keys()
 print(pearson_correlation)
 
+# Plot graph
 plt.figure(figsize=(20, 8))
 ax1 = plt.subplot(411)
-plt.scatter(pearson_correlation[:]['label'], pearson_correlation[:]['r'], color='blue', marker='o')
+plt.scatter(pearson_correlation[:]['label'], pearson_correlation[:]['r'], color='blue', marker='v')
+ax1.grid(color='lightgray', linestyle='-', linewidth='0.5')
 ax1.set_title('r value of Pearson correlation coefficient')
 plt.tight_layout()
 ax2 = plt.subplot(412)
 plt.scatter(pearson_correlation[:]['label'], pearson_correlation[:]['p_value'], color='red', marker='v')
+ax2.grid(color='lightgray', linestyle='-', linewidth='0.5')
 ax2.set_title('p value of Pearson correlation coefficient')
 plt.tight_layout()
 
