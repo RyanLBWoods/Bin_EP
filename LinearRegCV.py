@@ -29,18 +29,39 @@ del data['Visibility']
 del data['RH_5']
 del data['T9']
 
+# Get training set and testing set
+x_train, x_test, y_train, y_test = cross_validation.train_test_split(data.iloc[:, 1:], data['Appliances'],
+                                                                     random_state=1)
+
 lr = LinearRegression()
-# Cross validation
-mses = - cross_validation.cross_val_score(lr, data.iloc[:, 1:], data['Appliances'],
-                                          cv=10, scoring='neg_mean_squared_error')
-mae = - cross_validation.cross_val_score(lr, data.iloc[:, 1:], data['Appliances'],
-                                         cv=10, scoring='neg_mean_absolute_error')
+# Cross validation for training set
+t_mses = - cross_validation.cross_val_score(lr, x_train, y_train,
+                                            cv=10, scoring='neg_mean_squared_error')
+t_mae = - cross_validation.cross_val_score(lr, x_train, y_train,
+                                           cv=10, scoring='neg_mean_absolute_error')
 
 # Calculate mean
-rmses = []
-for mse in mses:
+t_rmses = []
+for mse in t_mses:
     mse = np.sqrt(mse)
-    rmses.append(mse)
-print("Mean result after 10-fold validation")
-print("MAE: ", mae.mean())
-print("RMSE: ", Functions.mean(rmses))
+    t_rmses.append(mse)
+
+print("Linear Regression")
+print("Mean result after 10-fold validation for training set")
+print("MAE: ", t_mae.mean())
+print("RMSE: ", Functions.mean(t_rmses))
+
+# Cross validation for testing set
+test_mses = - cross_validation.cross_val_score(lr, x_test, y_test,
+                                               cv=10, scoring='neg_mean_squared_error')
+test_mae = - cross_validation.cross_val_score(lr, x_test, y_test,
+                                              cv=10, scoring='neg_mean_absolute_error')
+
+# Calculate mean
+test_rmses = []
+for mse in test_mses:
+    mse = np.sqrt(mse)
+    test_rmses.append(mse)
+print("Mean result after 10-fold validation for testing set")
+print("MAE: ", test_mae.mean())
+print("RMSE: ", Functions.mean(test_rmses))
