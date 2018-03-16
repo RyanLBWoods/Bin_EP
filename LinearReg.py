@@ -30,7 +30,6 @@ x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, 1:], data['Appl
 # Run linear regression with all attributes
 lr = LinearRegression()
 lr.fit(x_train, y_train)
-lmtrain_all = (lr.coef_, lr.intercept_)
 
 # Evaluate performance
 y_train_predict = lr.predict(x_train)
@@ -40,6 +39,7 @@ t_rmse = Functions.rmse(y_train, y_train_predict)
 y_predict = lr.predict(x_test)
 mae = Functions.mae(y_test, y_predict)
 rmse = Functions.rmse(y_test, y_predict)
+print("Linear Regression")
 print('Train:')
 print('MAE of all: ', t_mae)
 print('RMSE of all: ', t_rmse)

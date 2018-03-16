@@ -29,14 +29,6 @@ del data['RH_6']
 x_train, x_test, y_train, y_test = cross_validation.train_test_split(data.iloc[:, 1:], data['Appliances'],
                                                                      random_state=1)
 
-# Delete least correlation data
-del x_train['Visibility']
-del x_test['Visibility']
-del x_train['RH_5']
-del x_test['RH_5']
-del x_train['T9']
-del x_test['T9']
-
 # Run SVM regression
 svmr = svm.SVR(kernel='rbf')
 svmr.fit(x_train, y_train)
@@ -49,19 +41,20 @@ t_rmse = Functions.rmse(y_train, y_train_predict)
 y_predict = svmr.predict(x_test)
 mae = Functions.mae(y_test, y_predict)
 rmse = Functions.rmse(y_test, y_predict)
+print('SVM radial')
 print('Train:')
-print('MAE without vsb & rh6 & T9 & RH5: ', t_mae)
-print('RMSE without vsb & rh6 & T9 & RH5: ', t_rmse)
+print('MAE without rh6: ', t_mae)
+print('RMSE without rh6: ', t_rmse)
 print('Test:')
-print('Mae without vsb & rh6 & T9 & RH5: ', mae)
-print('RMSE without vsb & rh6 & T9 & RH5: ', rmse)
+print('Mae without rh6: ', mae)
+print('RMSE without rh6: ', rmse)
 
 # Plot graph of test output and predict output
 plt.figure(figsize=(20, 8))
 ax1 = plt.subplot(111)
-plt.plot(range(len(y_predict)), y_predict, 'b', label='predict', linewidth=1)
 plt.plot(range(len(y_predict)), y_test, 'r', label='test', linewidth=0.5)
-ax1.set_title('ROC without RH5, 6, Visibility and T9')
+plt.plot(range(len(y_predict)), y_predict, 'b', label='predict', linewidth=1)
+ax1.set_title('ROC of SVM radial')
 plt.ylabel('Appliances')
 plt.legend(loc='upper right')
 plt.show()

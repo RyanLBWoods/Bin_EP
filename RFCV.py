@@ -43,7 +43,7 @@ for mse in t_mses:
     t_rmses.append(mse)
 
 print("Random Forest")
-print("Mean result after 10-fold validation")
+print("Mean result after 10-fold validation for training set")
 print("MAE: ", t_mae.mean())
 print("RMSE: ", Functions.mean(t_rmses))
 

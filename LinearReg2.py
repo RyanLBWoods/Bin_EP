@@ -51,9 +51,9 @@ print('RMSE without rh6: ', rmse_without_vsb_rh6)
 # Plot graph of test output and predict output
 plt.figure(figsize=(20, 8))
 ax1 = plt.subplot(111)
-plt.plot(range(len(y_predict)), y_predict, 'b', label='predict without RH6', linewidth=1)
-plt.plot(range(len(y_predict)), y_test, 'r', label='test', linewidth=0.5)
-ax1.set_title('ROC' '''(without RH6)''')
+plt.plot(range(len(y_predict)), y_test, 'r', label='test', linewidth=1)
+plt.plot(range(len(y_predict)), y_predict, 'b', label='predict without RH6', linewidth=0.8)
+ax1.set_title('ROC')
 plt.ylabel('Appliances')
 
 # Delete least correlation data
@@ -85,6 +85,6 @@ print('Mae without vsb & rh6 & T9 & RH5: ', mae)
 print('RMSE without vsb & rh6 & T9 & RH5: ', rmse)
 
 # Plot graph of test output and predict output
-plt.plot(range(len(y_predict)), y_predict, 'g', label='predict without RH6 & Visibility,T9,RH_5', linewidth=1)
+plt.plot(range(len(y_predict)), y_predict, 'g', label='predict without RH6 & Visibility,T9,RH_5', linewidth=0.5)
 plt.legend(loc='upper right')
 plt.show()

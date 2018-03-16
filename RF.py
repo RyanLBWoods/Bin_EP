@@ -33,6 +33,7 @@ rf = RandomForestRegressor(n_estimators=300, random_state=1)
 rf.fit(x_train, y_train)
 importances = rf.feature_importances_
 importances = pd.DataFrame(importances, index=data.columns[1:], columns=['importance'])
+importances.to_csv("feature importance.csv")
 
 # Delete least correlation data
 index = list(importances.index)

@@ -24,10 +24,6 @@ del data['date']
 del data['rv1']
 del data['rv2']
 del data['RH_6']
-# Delete least correlation data
-del data['Visibility']
-del data['RH_5']
-del data['T9']
 
 # Get training set and testing set
 x_train, x_test, y_train, y_test = cross_validation.train_test_split(data.iloc[:, 1:], data['Appliances'],
