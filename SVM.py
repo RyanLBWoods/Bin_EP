@@ -40,6 +40,7 @@ del x_test['T9']
 # Run SVM regression
 svmr = svm.SVR(kernel='rbf')
 svmr.fit(x_train, y_train)
+
 # Evaluate performance
 y_train_predict = svmr.predict(x_train)
 t_mae = Functions.mae(y_train, y_train_predict)
